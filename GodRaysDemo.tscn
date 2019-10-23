@@ -1,0 +1,224 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://addons/SIsilicon.vfx.godrays/GodRays.gd" type="Script" id=1]
+[ext_resource path="res://addons/SIsilicon.vfx.godrays/GodRays.svg" type="Texture" id=2]
+[ext_resource path="res://Tree.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://CamControl.gd" type="Script" id=4]
+[ext_resource path="res://Settings.gd" type="Script" id=5]
+[ext_resource path="res://Slider.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Square.ttf" type="DynamicFontData" id=7]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_color = Color( 0.305882, 0.223529, 0.176471, 1 )
+roughness = 0.86
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.184314, 0.564706, 0.219608, 1 )
+transmission_enabled = true
+transmission = Color( 0.572549, 0.572549, 0.572549, 1 )
+
+[sub_resource type="ProceduralSky" id=3]
+radiance_size = 2
+sky_top_color = Color( 0.14902, 0.443137, 0.6, 1 )
+sky_horizon_color = Color( 0.541176, 0.768627, 0.94902, 1 )
+sky_curve = 0.229421
+sun_latitude = 43.47
+sun_longitude = -59.29
+
+[sub_resource type="Environment" id=4]
+background_mode = 2
+background_sky = SubResource( 3 )
+background_color = Color( 0.309804, 0.309804, 0.309804, 1 )
+ambient_light_color = Color( 0.14902, 0.14902, 0.14902, 1 )
+tonemap_mode = 2
+glow_intensity = 1.06
+glow_hdr_threshold = 0.35
+
+[sub_resource type="DynamicFont" id=5]
+size = 20
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+use_filter = true
+font_data = ExtResource( 7 )
+
+[node name="Demo" type="Spatial"]
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+editor/display_folded = true
+transform = Transform( -0.5, 0.612372, -0.612372, 0, 0.707107, 0.707107, 0.866025, 0.353553, -0.353553, -1.94024, 4.57414, 1.68044 )
+
+[node name="GodRays" type="Spatial" parent="DirectionalLight"]
+script = ExtResource( 1 )
+__meta__ = {
+"_editor_icon": ExtResource( 2 )
+}
+exposure = 0.62
+attenuation = 1.10957
+light_size = 0.203
+
+[node name="OmniLight" type="OmniLight" parent="."]
+editor/display_folded = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.04453, -8.16179 )
+visible = false
+light_energy = 1.3
+omni_range = 25.0
+omni_attenuation = 2.29739
+
+[node name="GodRays" type="Spatial" parent="OmniLight"]
+script = ExtResource( 1 )
+__meta__ = {
+"_editor_icon": ExtResource( 2 )
+}
+exposure = 0.348
+light_size = 0.267
+
+[node name="Tree" type="MeshInstance" parent="."]
+mesh = ExtResource( 3 )
+material/0 = SubResource( 1 )
+material/1 = SubResource( 2 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 4 )
+
+[node name="CameraRoot" type="Spatial" parent="."]
+editor/display_folded = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.339, 0 )
+
+[node name="CameraTarget" type="Spatial" parent="CameraRoot"]
+transform = Transform( 0.46975, 0.380302, 0.796684, 0, 0.902452, -0.43079, -0.8828, 0.202364, 0.423927, 9.22454, -6.45966, 14.074 )
+script = ExtResource( 4 )
+
+[node name="InterpolatedCamera" type="InterpolatedCamera" parent="CameraRoot"]
+transform = Transform( 0.853179, 0.224708, 0.470735, 0, 0.902452, -0.43079, -0.521618, 0.367541, 0.769953, 8.34521, -6.2302, 13.1208 )
+target = NodePath("../CameraTarget")
+speed = 8.0
+enabled = true
+
+[node name="TabContainer" type="TabContainer" parent="."]
+editor/display_folded = true
+margin_right = 372.0
+margin_bottom = 186.0
+script = ExtResource( 5 )
+
+[node name="Node Settings" type="Tabs" parent="TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="VBox" type="VBoxContainer" parent="TabContainer/Node Settings"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 3.0
+margin_top = 5.0
+margin_right = -3.0
+margin_bottom = -8.0
+
+[node name="LightType" type="OptionButton" parent="TabContainer/Node Settings/VBox"]
+margin_right = 358.0
+margin_bottom = 20.0
+text = "Directional Light"
+items = [ "Directional Light", null, false, 0, null, "Point Light", null, false, 1, null ]
+selected = 0
+
+[node name="Exposure" parent="TabContainer/Node Settings/VBox" instance=ExtResource( 6 )]
+margin_top = 24.0
+margin_right = 358.0
+margin_bottom = 40.0
+text = "Exposure"
+value = 0.5
+
+[node name="Attenuation" parent="TabContainer/Node Settings/VBox" instance=ExtResource( 6 )]
+margin_top = 44.0
+margin_right = 358.0
+margin_bottom = 60.0
+text = "Attenuation"
+max_value = 8.0
+value = 2.0
+
+[node name="LightSize" parent="TabContainer/Node Settings/VBox" instance=ExtResource( 6 )]
+margin_top = 64.0
+margin_right = 358.0
+margin_bottom = 80.0
+text = "Light Size"
+max_value = 2.0
+value = 0.6
+
+[node name="LightColor" type="HBoxContainer" parent="TabContainer/Node Settings/VBox"]
+editor/display_folded = true
+margin_top = 84.0
+margin_right = 358.0
+margin_bottom = 104.0
+
+[node name="Label" type="Label" parent="TabContainer/Node Settings/VBox/LightColor"]
+margin_top = 3.0
+margin_right = 76.0
+margin_bottom = 17.0
+text = "Light Color: "
+
+[node name="Color" type="ColorPickerButton" parent="TabContainer/Node Settings/VBox/LightColor"]
+margin_left = 80.0
+margin_right = 256.0
+margin_bottom = 20.0
+text = "                                         "
+align = 0
+color = Color( 1, 1, 1, 1 )
+edit_alpha = false
+
+[node name="Project Settings" type="Tabs" parent="TabContainer"]
+editor/display_folded = true
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="VBox" type="VBoxContainer" parent="TabContainer/Project Settings"]
+editor/display_folded = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 3.0
+margin_top = 5.0
+margin_right = -3.0
+margin_bottom = -8.0
+
+[node name="SampleNumber" parent="TabContainer/Project Settings/VBox" instance=ExtResource( 6 )]
+margin_right = 358.0
+text = "Sample Number"
+min_value = 1.0
+max_value = 128.0
+value = 24.0
+
+[node name="Dither" parent="TabContainer/Project Settings/VBox" instance=ExtResource( 6 )]
+margin_top = 20.0
+margin_right = 358.0
+margin_bottom = 36.0
+text = "Dither"
+value = 1.0
+
+[node name="CheckBox" type="CheckBox" parent="TabContainer/Project Settings/VBox"]
+margin_top = 40.0
+margin_right = 358.0
+margin_bottom = 64.0
+pressed = true
+text = "Use PCF5"
+
+[node name="Label" type="Label" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -22.0
+margin_right = 367.0
+custom_fonts/font = SubResource( 5 )
+text = "Move the camera with the WASD keys."
+[connection signal="item_selected" from="TabContainer/Node Settings/VBox/LightType" to="TabContainer" method="_on_LightType_item_selected"]
+[connection signal="value_changed" from="TabContainer/Node Settings/VBox/Exposure" to="TabContainer" method="_on_Exposure_value_changed"]
+[connection signal="value_changed" from="TabContainer/Node Settings/VBox/Attenuation" to="TabContainer" method="_on_Attenuation_value_changed"]
+[connection signal="value_changed" from="TabContainer/Node Settings/VBox/LightSize" to="TabContainer" method="_on_LightSize_value_changed"]
+[connection signal="color_changed" from="TabContainer/Node Settings/VBox/LightColor/Color" to="TabContainer" method="_on_Color_color_changed"]
+[connection signal="value_changed" from="TabContainer/Project Settings/VBox/SampleNumber" to="TabContainer" method="_on_SampleNumber_value_changed"]
+[connection signal="value_changed" from="TabContainer/Project Settings/VBox/Dither" to="TabContainer" method="_on_Dither_value_changed"]
+[connection signal="toggled" from="TabContainer/Project Settings/VBox/CheckBox" to="TabContainer" method="_on_CheckBox_toggled"]
