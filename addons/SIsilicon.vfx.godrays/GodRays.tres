@@ -19,6 +19,8 @@ uniform int num_samples = 100;
 uniform float dither = 1.0;
 uniform bool use_pcf5 = true;
 
+const float PI = 3.141592653;
+const float HALF_PI = PI/2.0;
 
 varying mat4 inv_project_mat;
 varying vec4 light_screen_pos;
@@ -58,6 +60,12 @@ float depth_texture(sampler2D tex, vec2 uv) {
 	return -upos.z/upos.w;
 }
 
+vec4 texture_panorama(sampler2D tex, vec3 ray) {
+	float u = atan(ray.x, ray.z) / (2.0 * PI) + 0.5;
+	float v = asin(ray.y) / PI + 0.5;
+	return texture(tex, vec2(u, 1.0 - v));
+}
+
 float sun_light(sampler2D depth, vec3 ray_o, vec3 ray_d, vec2 uv, vec2 tex_Size) {
 	float light_depth = mix(light_screen_pos.z, far_plane, float(1-light_type));
 	
@@ -72,10 +80,9 @@ float sun_light(sampler2D depth, vec3 ray_o, vec3 ray_d, vec2 uv, vec2 tex_Size)
 	}
 	
 	if(use_clouds) {
-		is_obstacle = min(is_obstacle + texture(clouds, uv).a, 1.0);
+		is_obstacle = min(is_obstacle + texture_panorama(clouds, ray_d).a, 1.0);
 	}
 	
-	float HALF_PI = 3.14159265359/2.0;
 	float sun = 0.0;
 	if(light_type == 0) {
 		sun = smoothstep(1.0, 0.0, acos(dot(light_pos, ray_d)) / HALF_PI / size);
@@ -125,6 +132,9 @@ float rand_from_seed(inout uint seed) {
 }
 
 void fragment() {
+	if(length(light_color) <= 0.001)
+		discard;
+	
 	vec2 pixel_size = 1.0 / vec2(textureSize(SCREEN_TEXTURE, 0));//vec2(dFdx(SCREEN_UV.x), dFdy(SCREEN_UV.y)) * 1.5;
 	vec2 screen_uv = SCREEN_UV;
 	vec2 delta_uv = (light_screen_pos.xy - screen_uv) / (float(num_samples));
@@ -147,6 +157,7 @@ void fragment() {
 	
 	//vec3 ray = uv_to_ray(SCREEN_UV, INV_CAMERA_MATRIX);
 	//ALBEDO = vec3(sun_light(DEPTH_TEXTURE, camera_pos, ray, SCREEN_UV, pixel_size));
+	//ALBEDO = texture(clouds, SCREEN_UV).rgb;
 }"
 
 [resource]
