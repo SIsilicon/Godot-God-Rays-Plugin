@@ -18,7 +18,6 @@ transmission_enabled = true
 transmission = Color( 0.572549, 0.572549, 0.572549, 1 )
 
 [sub_resource type="ProceduralSky" id=3]
-radiance_size = 2
 sky_top_color = Color( 0.14902, 0.443137, 0.6, 1 )
 sky_horizon_color = Color( 0.541176, 0.768627, 0.94902, 1 )
 sky_curve = 0.229421
@@ -44,7 +43,6 @@ font_data = ExtResource( 7 )
 [node name="Demo" type="Spatial"]
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
-editor/display_folded = true
 transform = Transform( -0.5, 0.612372, -0.612372, 0, 0.707107, 0.707107, 0.866025, 0.353553, -0.353553, -1.94024, 4.57414, 1.68044 )
 
 [node name="GodRays" type="Spatial" parent="DirectionalLight"]
@@ -52,12 +50,11 @@ script = ExtResource( 1 )
 __meta__ = {
 "_editor_icon": ExtResource( 2 )
 }
-exposure = 0.62
-attenuation = 1.10957
+exposure = 0.913
+attenuation = 1.93187
 light_size = 0.203
 
 [node name="OmniLight" type="OmniLight" parent="."]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.04453, -8.16179 )
 visible = false
 light_energy = 1.3
@@ -81,7 +78,6 @@ material/1 = SubResource( 2 )
 environment = SubResource( 4 )
 
 [node name="CameraRoot" type="Spatial" parent="."]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.339, 0 )
 
 [node name="CameraTarget" type="Spatial" parent="CameraRoot"]
@@ -95,7 +91,6 @@ speed = 8.0
 enabled = true
 
 [node name="TabContainer" type="TabContainer" parent="."]
-editor/display_folded = true
 margin_right = 372.0
 margin_bottom = 186.0
 script = ExtResource( 5 )
@@ -128,6 +123,8 @@ margin_top = 24.0
 margin_right = 358.0
 margin_bottom = 40.0
 text = "Exposure"
+min_value = 0.0
+max_value = 1.0
 value = 0.5
 
 [node name="Attenuation" parent="TabContainer/Node Settings/VBox" instance=ExtResource( 6 )]
@@ -135,6 +132,7 @@ margin_top = 44.0
 margin_right = 358.0
 margin_bottom = 60.0
 text = "Attenuation"
+min_value = 0.0
 max_value = 8.0
 value = 2.0
 
@@ -143,11 +141,11 @@ margin_top = 64.0
 margin_right = 358.0
 margin_bottom = 80.0
 text = "Light Size"
+min_value = 0.0
 max_value = 2.0
 value = 0.6
 
 [node name="LightColor" type="HBoxContainer" parent="TabContainer/Node Settings/VBox"]
-editor/display_folded = true
 margin_top = 84.0
 margin_right = 358.0
 margin_bottom = 104.0
@@ -168,7 +166,6 @@ color = Color( 1, 1, 1, 1 )
 edit_alpha = false
 
 [node name="Project Settings" type="Tabs" parent="TabContainer"]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -178,7 +175,6 @@ margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="VBox" type="VBoxContainer" parent="TabContainer/Project Settings"]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 3.0
@@ -198,6 +194,8 @@ margin_top = 20.0
 margin_right = 358.0
 margin_bottom = 36.0
 text = "Dither"
+min_value = 0.0
+max_value = 1.0
 value = 1.0
 
 [node name="CheckBox" type="CheckBox" parent="TabContainer/Project Settings/VBox"]

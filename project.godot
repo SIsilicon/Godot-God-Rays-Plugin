@@ -27,6 +27,6 @@ enabled=PoolStringArray( "SIsilicon.vfx.godrays" )
 
 quality/filters/msaa=2
 environment/default_environment="res://default_env.tres"
-quality/godrays/sample_number=20
+quality/godrays/sample_number=50
 quality/godrays/use_pcf5=true
 quality/godrays/dither_amount=1.0

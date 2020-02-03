@@ -1,7 +1,6 @@
 tool
 extends Spatial
 
-#export(NodePath) var light_source setget set_light
 var light : Light
 export(float, 0, 2) var exposure := 0.5 setget set_exposure
 export(float, EASE) var attenuation := 2.0 setget set_attenuation
@@ -34,17 +33,16 @@ func _ready() -> void:
 	set_exposure(exposure)
 	set_attenuation(attenuation)
 	set_light_size(light_size)
-
-func _process(delta : float) -> void:
+	
 	material.set_shader_param("use_clouds", false)
 	material.set_shader_param("clouds", null)
-	
+
+func _process(delta : float) -> void:
 	if not light:
 		material.set_shader_param("light_type", 0)
 		material.set_shader_param("light_pos", Vector3())
 		return
 	
-#	var light := get_node(light) as Light
 	var is_directional := light is DirectionalLight
 	
 	material.set_shader_param("light_type", not is_directional)
@@ -62,11 +60,6 @@ func _process(delta : float) -> void:
 	material.set_shader_param("num_samples", ProjectSettings.get_setting("rendering/quality/godrays/sample_number"))
 	material.set_shader_param("use_pcf5", ProjectSettings.get_setting("rendering/quality/godrays/use_pcf5"))
 	material.set_shader_param("dither", ProjectSettings.get_setting("rendering/quality/godrays/dither_amount"))
-
-#func set_light(value : NodePath) -> void:
-#	light = value
-#	if get_child(0):
-#		get_child(0).visible = light != null
 
 func set_exposure(value : float) -> void:
 	exposure = value

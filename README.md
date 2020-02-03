@@ -1,6 +1,8 @@
 #  Godot God Rays Plugin
 
-This is a plugin made for Godot 3.1. It contains a node to create a real-time volumetric effect for video games.
+This is a plugin made for Godot 3.2. It contains a node to create a real-time volumetric effect for video games. This is a post-processing effect, so the performance hit depends on the size of the screen/viewport.
+
+[TOC]
 
 ## Installation
 
@@ -10,7 +12,7 @@ First you download it (duh :P). Then to get the plug-in into your Godot game pro
 
 The `GodRays` node creates a, you guessed it, god rays post-processing effect. It's made to be used with either a `DirectionalLight` or an `OmniLight`, but nothing's stopping you from using it on a `SpotLight`(It won't take the shape of its cone though). Just create a node as a child of your light and you're all set!
 
-#### Properties
+### Properties
 
 This node has minimal properties and is easy to customize.
 
@@ -18,10 +20,17 @@ This node has minimal properties and is easy to customize.
 - `Attenuation`: The "shape" of the god rays. You'll have to play with this a bit to know what it does.
 - `Light Size`: The visual size of the light source. For `DirectionalLights` a value of `1` will lead to the light covering half the screen, while `OmniLights` multiply this by their `range` and are attenuated with distance.
 
-#### Project Settings
+### Project Settings
 
 There'll also be new parameters in the `Project Settings` under `Rendering/Quality`.
 
 * `Sample Number`: The number of samples used to render the god rays. More samples lead to a more accurate result, but also is more CPU heavy.
 * `Dither Amount`: The amount of noise to use on the effect. This can help counter aliasing artifacts caused by a low sample count.
 * `Use PCF5`: Whether to use more depth samples in the effect for filtering. This can make it look smoother. **Disclaimer: it doesn't smooth noise from dithering.**
+
+## Sky Shader
+
+This plugin also works with Lexpartizan's [Godot Sky Shader](https://github.com/Lexpartizan/Godot_sky_shader). All you have to do is add the `GodRays` node as a child of the `Sky.tscn` node. The clouds in the sky will then affect the god rays.
+
+
+
