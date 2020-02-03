@@ -3,8 +3,6 @@
 ![Screenshot](Screenshot.png)
 
 This is a plugin made for Godot 3.2. It contains a node to create a real-time volumetric effect for video games. This is a post-processing effect, so the performance hit depends on the size of the screen/viewport.
-
-This is a plugin made for Godot 3.2. It contains a node to create a real-time volumetric effect for video games. This is a post-processing effect, so the performance hit depends on the size of the screen/viewport.
 ## Installation
 
 First you download it (duh :P). Then to get the plug-in into your Godot game project, just copy the `addons/SIsilicon.vfx.godrays`  folder and paste it into your project's own `addons` folder. If you don't have such a folder, make one. Then open up your project, go into `ProjectSettings -> Plugins` tab. The plug-in should appear there. All that's left to do now is to just set its status to `Active` and you should be good to go. You need to set it to active in this demo project too.
