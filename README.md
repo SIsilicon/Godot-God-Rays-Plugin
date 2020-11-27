@@ -1,5 +1,7 @@
 #  Godot God Rays Plugin
 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XXXJ5ETNT5PSN)
+
 ![Screenshot](Screenshot.png)
 
 This is a plugin made for Godot 3.2. It contains a node to create a real-time volumetric effect for video games. This is a post-processing effect, so the performance hit depends on the size of the screen/viewport.
